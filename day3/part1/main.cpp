@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <cctype>
+#include <set>
+#include <optional>
 
 // https://adventofcode.com/2022/day/3
 
@@ -18,7 +19,49 @@ int getItemPriority(char item) {
     return charCode - offset;
 }
 
+std::optional<char> getDuplicatedItem(std::string rucksack) {
+    // Sets for O(1) lookups
+    std::set<char> leftCompartmentItems { };
+    std::set<char> rightCompartmentItems { };
+
+    unsigned long midpoint { rucksack.length() / 2 };
+    unsigned long leftIndex { 0 };
+    unsigned long rightIndex { rucksack.length() - 1 };
+    
+    while (leftIndex < midpoint && rightIndex >= midpoint) {
+        char leftItem = rucksack[leftIndex];
+        char rightItem = rucksack[rightIndex];
+        leftCompartmentItems.insert(leftItem);
+        rightCompartmentItems.insert(rightItem);
+        leftIndex++;
+        rightIndex--;
+    }
+
+    // After creating the sets, compare them to each other to find the intersection
+    for (auto item : leftCompartmentItems) {
+        if (rightCompartmentItems.count(item)) {
+            return item;
+        }
+    }
+
+    return std::nullopt;
+}
+
 int main() {
-    std::cout << getItemPriority('Z') << std::endl;
+    std::ifstream inputFile;
+    inputFile.open("./input.txt");
+
+    std::string rucksack { };
+    int totalPriorities { 0 };
+    while (std::getline(inputFile, rucksack)) {
+        std::optional<char> duplicatedItem = getDuplicatedItem(rucksack);
+        if (duplicatedItem.has_value()) {
+            int priority = getItemPriority(*duplicatedItem);
+            std::cout << rucksack << " duplicated " << *duplicatedItem << " with priority " << priority << "\n";
+            totalPriorities += priority;
+        }
+    }
+    
+    std::cout << "Answer: " << totalPriorities << std::endl;
     return 0;
 }

@@ -1,2 +1,2 @@
 main:
-	g++ -o solution main.cpp
+	g++ -std=c++17 -o solution main.cpp
