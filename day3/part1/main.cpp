@@ -20,22 +20,14 @@ int getItemPriority(char item) {
 }
 
 std::optional<char> getDuplicatedItem(std::string rucksack) {
-    // Sets for O(1) lookups
-    std::set<char> leftCompartmentItems { };
-    std::set<char> rightCompartmentItems { };
-
+    // Split the string in half
     unsigned long midpoint { rucksack.length() / 2 };
-    unsigned long leftIndex { 0 };
-    unsigned long rightIndex { rucksack.length() - 1 };
-    
-    while (leftIndex < midpoint && rightIndex >= midpoint) {
-        char leftItem = rucksack[leftIndex];
-        char rightItem = rucksack[rightIndex];
-        leftCompartmentItems.insert(leftItem);
-        rightCompartmentItems.insert(rightItem);
-        leftIndex++;
-        rightIndex--;
-    }
+    std::string leftCompartment = rucksack.substr(0, midpoint);
+    std::string rightCompartment = rucksack.substr(midpoint);
+
+    // Create sets of "items" (chars) from the left and right compartment strings
+    std::set<char> leftCompartmentItems(leftCompartment.begin(), leftCompartment.end());
+    std::set<char> rightCompartmentItems(rightCompartment.begin(), rightCompartment.end());
 
     // After creating the sets, compare them to each other to find the intersection
     for (auto item : leftCompartmentItems) {
@@ -44,6 +36,7 @@ std::optional<char> getDuplicatedItem(std::string rucksack) {
         }
     }
 
+    // The problem didn't state whether a duplicate is guaranteed to exist, so use optional just in case
     return std::nullopt;
 }
 
