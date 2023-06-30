@@ -58,5 +58,6 @@ int main() {
     }
     
     std::cout << "Answer: " << totalPriorities << std::endl;
+    inputFile.close();
     return 0;
 }

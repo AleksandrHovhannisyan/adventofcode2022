@@ -66,5 +66,6 @@ int main() {
     inputFile.open("./input.txt");
     auto numOverlappingRanges = getNumOverlappingRanges(inputFile);
     std::cout << "Answer: " << numOverlappingRanges << std::endl;
+    inputFile.close();
     return 0;
 }
