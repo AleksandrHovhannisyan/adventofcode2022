@@ -5,11 +5,14 @@ CFLAGS = -std=c++20 -Wall
 
 all: part1 part2
 
-part1: part1.cpp
-	$(CC) $(CFLAGS) -o part1 part1.cpp
+utils.o: ../utils.cpp ../utils.h
+	${CC} ${CFLAGS} -c ../utils.cpp
 
-part2: part2.cpp
-	$(CC) $(CFLAGS) -o part2 part2.cpp
+part1: part1.cpp utils.o
+	$(CC) $(CFLAGS) -o part1 part1.cpp utils.o
+
+part2: part2.cpp utils.o
+	$(CC) $(CFLAGS) -o part2 part2.cpp utils.o
 
 clean:
-	rm -f part1 part2
+	rm -f part1 part2 utils.o

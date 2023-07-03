@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <numeric>
+#include "../utils.h"
 
 int ITEM_CHAR_CODE_START = static_cast<int>('A');
 int ITEM_CHAR_CODE_END = static_cast<int>('Z');
@@ -66,16 +67,6 @@ std::vector<std::deque<char>> parseCrateStacks(std::ifstream& inputFile) {
     return crateStacks;
 }
 
-std::vector<std::string> splitStringByDelimiter(std::string sourceString, char delimiter) {
-    std::vector<std::string> chunks { };
-    std::istringstream stringParser(sourceString);
-    std::string chunk { "" };
-    while (std::getline(stringParser, chunk, delimiter)) {
-        chunks.push_back(chunk);
-    }
-    return chunks;
-}
-
 struct MoveInstruction {
     int numCratesToMove;
     int sourceStackNumber;
@@ -127,8 +118,7 @@ int main() {
         auto &sourceStack = crateStacks[instruction.sourceStackNumber - 1];
         auto &destinationStack = crateStacks[instruction.destinationStackNumber - 1];
 
-        std::cout << "INSTRUCTION:\n";
-
+        // std::cout << "INSTRUCTION:\n";
         for (auto i = 0; i < instruction.numCratesToMove; i++) {
             auto crateToMove = sourceStack.front();
             // std::cout << "\tMoving " << crateToMove << " from " << instruction.sourceStackNumber << " to " << instruction.destinationStackNumber << "\n";
